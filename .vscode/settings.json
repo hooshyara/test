@@ -1,0 +1,7 @@
+{
+    "editor.minimap.renderCharacters": false,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "workbench.list.smoothScrolling": true,
+    "editor.cursorStyle": "line",
+    "editor.cursorBlinking": "expand"
+}
