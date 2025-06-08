@@ -3384,7 +3384,51 @@ class SumFeesView(APIView):
             print(e)
             return Response({"message":"ERROR"},
                             status=status.HTTP_400_BAD_REQUEST)
-        
+
+class ContinerBookingInfoView(APIView):
+    def get(self, request, id):
+        try:
+            continer_booking = Guide.objects.filter(company=id)
+            guide = Guide.objects.filter(Q(is_valid=True) & Q(company=id))
+            guide2 = Guide.objects.filter(Q(is_valid=False) & Q(company=id))
+            guide3 = Guide.objects.filter(Q(is_active=False) & Q(company=id))
+            guide_id = guide.values_list("id", flat=True)
+
+            booking = Booking.objects.filter(guide__id__in=guide_id)
+
+            sum_fee = SumFees.objects.filter(Q(sum_fees__gt=0) & Q(continer__bill__company=id))
+
+            demurrage = Demurrage.objects.filter(Q(continer__bill__company=id))
+            demurrage_id = demurrage.values_list("continer__file_number", flat=True)
+
+            exit_cont = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج شده') 
+                                                        & Q(continer__bill__company=id)))
+            
+            exit_cont2 = len(ExitContiner.objects.filter(Q(types='کانتینرهای مهلت خروج گذشته') 
+                                                        & Q(continer__bill__company=id)))
+            
+            exit_cont3 = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج نشده')
+                                                        & Q(continer__bill__company=id)))
+            
+            continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
+            return Response({
+                                             "guide_len":len(guide), 
+                                            "booking_len":len(guide)- len(booking),
+                                            "booking":len(booking),
+                                            "cont_without_booking":len(continer_booking) -len(booking),
+                                            "guide2":len(guide2), "guide3":len(guide3),  
+                                            "sum_fee":len(sum_fee), 
+                                            "not_fee":len(continer_booking) - len(sum_fee),
+                                            "demurrage":len(set(demurrage_id)),
+                                            "not_demurrage":len(continer_booking) - len(set(demurrage_id)),
+                                            "exit_cont":exit_cont, "exit_cont2":exit_cont2,
+                                            "exit_cont3":exit_cont3, 
+                                            "not_download":continer
+                                           }, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"message":"ERROR"},
+                            status=status.HTTP_400_BAD_REQUEST)
 class ContinerBookingView(APIView): # get continer continer-booking page and continer-guide page
     def get(self, request,id):
         try:
