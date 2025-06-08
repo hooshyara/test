@@ -94,7 +94,7 @@ ROOT_URLCONF = 'automation.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -163,7 +163,7 @@ SIMPLE_JWT = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "auto1",
+        "NAME": "auto",
         "USER": "postgres",
         "PASSWORD": "12345",
         "HOST": "127.0.0.1",
