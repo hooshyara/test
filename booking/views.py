@@ -3416,7 +3416,7 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                 demurrage_id = demurrage.values_list("continer__file_number", flat=True)
                 exit_cont = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج شده') & Q(continer__bill__company=id)))
                 exit_cont2 = len(ExitContiner.objects.filter(Q(types='کانتینرهای مهلت خروج گذشته') & Q(continer__bill__company=id)))
-                exit_cont3 = len(ExitContiner.objects.filter(types='کانتینرهای خارج نشده' & Q(continer__bill__company=id)))
+                exit_cont3 = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج نشده') & Q(continer__bill__company=id)))
                 continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
                 # guide_len = کل راهنامه ها و کانتینر دارای راهنامه
                 # booking_len =  کل راهنامه ها ی فاقد بوکینگ
