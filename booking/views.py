@@ -9,6 +9,8 @@ from user.helper import get_user
 from django.db.models import Q
 from django.db import transaction
 import json
+import weasyprint
+from django.template.loader import get_template
 from company.serializers import CompanySeriallizer
 import jdatetime
 from rest_framework.pagination import PageNumberPagination
@@ -3586,3 +3588,56 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
             return Response({"message":"ERROR"},
                             status=status.HTTP_400_BAD_REQUEST)
         
+class GenerateReportPDF(APIView):
+    """
+    A class-based view using DRF's APIView to handle PDF generation.
+    Receives POST data, populates an HTML template, and returns a 
+    downloadable PDF file.
+    """
+    def post(self, request):
+        # 1. Get data from the request. DRF's `request.data` handles JSON, form data, etc.
+        data = request.data
+        context = {
+            'report_date': data.get('report_date', ''),
+            'booking_number': data.get('booking_number', ''),
+            'issue_date': data.get('issue_date', ''),
+            'waybill_number': data.get('waybill_number', ''),
+            'carrier_company': data.get('carrier_company', ''),
+            'loading_date': data.get('loading_date', ''),
+            'route': data.get('route', ''),
+            'truck_number': data.get('truck_number', ''),
+            'size': data.get('size', ''),
+            'cargo_weight': data.get('cargo_weight', ''),
+            'driver_name': data.get('driver_name', ''),
+            'contract_number': data.get('contract_number', ''),
+            'shipper_name': data.get('shipper_name', ''),
+            'shipper_commission_percentage': data.get('shipper_commission_percentage', ''),
+            'freight_cost': data.get('freight_cost', ''),
+            'shipper_commission_amount': data.get('shipper_commission_amount', ''),
+            'excess_tonnage_quantity_shipper': data.gert('excess_tonnage_quantity_shipper', '0'),
+            'excess_tonnage_amount_shipper': data.get('excess_tonnage_amount_shipper', '0'),
+            'excess_tonnage_weight_shipper': data.get('excess_tonnage_weight_shipper', '0'),
+            'shipper_total': data.get('shipper_total', ''),
+            'company_name': data.get('company_name', ''),
+            'company_commission': data.get('company_commission', ''),
+            'waybill_insurance': data.get('waybill_insurance', ''),
+            'intermediary_commission': data.get('intermediary_commission', '0'),
+            'company_total': data.get('company_total', ''),
+            'driver_balance': data.get('driver_balance', ''),
+            'difference': data.get('difference', '0'),
+            'notes': data.get('notes', ''),
+        }
+
+        # 2. Load and render the HTML template
+        template = get_template('sag.html')
+        html_string = template.render(context)
+
+        # 3. Generate the PDF using WeasyPrint
+        pdf_file = weasyprint.HTML(string=html_string).write_pdf()
+
+        # 4. Create a standard Django HttpResponse to serve the file.
+        #    This is the correct approach for file downloads even within an APIView.
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+        
+        return response

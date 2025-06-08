@@ -84,5 +84,6 @@ urlpatterns = [
     path('sla/<int:id>/', SumFeesView.as_view(), name='sla'),
     path('continerbooking/<int:id>/', ContinerBookingView.as_view(), name='sla'),
     path('search/', ContinerBookingView.as_view(), name='ssla'),
+    path('pdf/', GenerateReportPDF.as_view(), name='Generate-Report-PDF'),
     
 ]

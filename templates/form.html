@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>report</title>
+</head>
+<body>
+    <div class="bg-white block w-[210mm] min-h-[297mm] box-border shadow-[0_0_0.5cm_rgba(0,0,0,0.5)] mx-auto my-5 p-5">
+        <div class="text-center mb-[10px] border-2 border-black">
+            <h1 class="text-[20px] m-0 font-bold">شرکت حمل و نقل بین المللی بارجامه توس</h1>
+            <h2 class="text-[18px] my-[5px] mx-auto">گزارش بارگیری کامیون </h2>
+            <p dir="rtl" class="text-[14px] my-[5px] justify-self-end rtl">تاریخ گزارش: <span class="value">{{ report_date | default:"1404-03-13" }} </span></p>
+        </div>
+
+        <div class="text-center border-2 border-black">
+            <div class="px-10 pb-10">
+                <h2 class="m-2 border-black border-b-2 border-t-2">
+                اطلاعات مربوط به بارگیری
+                </h2>
+                <div dir="rtl" class="grid grid-cols-2 gap-y-3 text-right px-6">
+                    <p>ش بوکینگ: {{ booking_number }}</p>
+                    <p>تاریخ صدور: {{ issue_date }}</p>
+                    <p>شماره راهنامه: {{ waybill_number }}</p>
+                </div>
+            </div>
+            <div class="px-10 pb-10">
+                <h2 class="m-2 border-black border-b-2 border-t-2">
+                اطلاعات مربوط به حمل بار
+            </h2>
+            <div dir="rtl" class="grid grid-cols-2 gap-y-3 text-right px-6 mb-3">
+                    <p>تاریخ بارگیری: {{ loading_date }}</p>
+                    <p>شرکت کریر: {{ carrier_company }}</p>
+                    <p>مسیر: {{ route }}</p>
+                </div>
+                <div dir="rtl" class="grid grid-cols-2 gap-y-3 text-right px-6 mb-3">
+                    <p>سایز: {{ size }}</p>
+                    <p>ش کامیون: {{ truck_number }}</p>
+                    <p>وزن کالا: {{ cargo_weight }}</p>
+                </div>
+                <div dir="rtl" class="grid grid-cols-2 gap-y-3 text-right px-6">
+                    <p>ش قرارداد: {{ contract_number }}</p>
+                    <p>نام راننده: {{ driver_name }}</p>
+                </div>
+            </div>
+            <div class="px-10 pb-10">
+                <h2 class="m-2 border-black border-b-2 border-t-2">
+                اطلاعات مربوط به صاحب کالا
+                </h2>
+                <div dir="rtl" class="grid grid-cols-2 gap-y-3 text-right px-6">
+                    <p>صاحب کالا: {{ shipper_name }}</p>
+                    <p>درصد کمیسیون: {{ shipper_commission_percentage }}</p>
+                    <p>کرایه: {{ freight_cost }}</p>
+                    <p>مبلغ کمیسیون: {{ shipper_commission_amount }}</p>
+                    <p>مقدار اضافه تناژ: {{ excess_tonnage_quantity_shipper }}</p>
+                    <p>مبلغ اضافه تناژ: {{ excess_tonnage_amount_shipper }}</p>
+                    <p>وزن اضافه تناژ: {{ excess_tonnage_weight_shipper }}</p>
+                    <p>جمع کل: {{ shipper_total }}</p>
+                </div>
+            </div>
+            <div class="px-10 pb-10">
+                <h2 class="m-2 border-black border-b-2 border-t-2">
+                اطلاعات مربوط به شرکت
+                </h2>
+                <div dir="rtl" class="grid grid-cols-2 gap-y-3 text-right px-6 mb-3">
+                    <p>نام شرکت: {{ company_name }}</p>
+                    <p>کمیسیون شرکت: {{ company_commission }}</p>
+                    <p>بیمه راهنامه: {{ waybill_number }}</p>
+                </div>
+                <div dir="rtl" class="grid grid-cols-2 gap-y-3 text-right px-6">
+                    <p>کمیسیون واسط: {{ intermediary_commission }}</p>
+                    <p>جمع کل: {{ company_total }}</p>
+                </div>
+            </div>
+            <div class="px-10 pb-10">
+                <div dir="rtl" class="m-2 border-black border-b-2 border-t-2 grid grid-cols-2 text-right mb-8">
+                    <h2 class="">ما به تفاوت: {{ difference }}</h2>
+                    <h2>مانده حساب راننده: {{ driver_balance }}</h2>
+                </div>
+                <div dir="rtl" class="grid grid-cols-2 text-right px-6">
+                    <p>توضیحات: {{ notes }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
