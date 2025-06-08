@@ -83,6 +83,6 @@ urlpatterns = [
     path('continerCreate/<int:id>/', CreateContinerView.as_view(), name='creatCR'),
     path('sla/<int:id>/', SumFeesView.as_view(), name='sla'),
     path('continerbooking/<int:id>/', ContinerBookingView.as_view(), name='sla'),
-    path('continerbooking/', ContinerBookingView.as_view(), name='sla'),
+    path('search/', ContinerBookingView.as_view(), name='ssla'),
     
 ]

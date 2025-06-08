@@ -3405,10 +3405,38 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
 
                 carrier = Carrier.objects.all()
                 carrier_ser = CarrierSerializers(carrier, many=True)
+
+                guide = Guide.objects.filter(Q(is_valid=True) & Q(company=id))
+                guide2 = Guide.objects.filter(Q(is_valid=False) & Q(company=id))
+                guide3 = Guide.objects.filter(Q(is_active=False) & Q(company=id))
+                guide_id = guide.values_list("id", flat=True)
+                booking = Booking.objects.filter(guide__id__in=guide_id)
+                sum_fee = SumFees.objects.filter(Q(sum_fees__gt=0) & Q(continer__bill__company=id))
+                demurrage = Demurrage.objects.filter(Q(continer__bill__company=id))
+                demurrage_id = demurrage.values_list("continer__file_number", flat=True)
+                print(demurrage_id)
+                # guide_len = کل راهنامه ها و کانتینر دارای راهنامه
+                # booking_len =  کل راهنامه ها ی فاقد بوکینگ
+                # booking =  کل کانتینر های دارای بوکینگ
+                # cont_without_booking = کانتینر های فاقد بوکینگ
+                # guide2 = کانتینر فاقد راهنامه
+                # guide3 = تعداد راهنامه باطل شده
+                #sum_fee = کانتینر دارای هزینه
+                # not_fee = کانتینر فاقد هزینه
+                # demurrage = کانتینر دارای هزینه دمراژ
+                # not_demurrage = کانتینر فاقد هزینه دمراژ
                 return paginator.get_paginated_response({"data":serializer.data, "route":route_ser.data,
-                                                         "ship":ship_ser.data, "owner_goods":owner_goods_ser.data,
-                                                         "carrier":carrier_ser.data})
-            
+                                            "ship":ship_ser.data, "owner_goods":owner_goods_ser.data,
+                                            "carrier":carrier_ser.data, "guide_len":len(guide), 
+                                            "booking_len":len(guide)- len(booking),
+                                            "booking":len(booking),
+                                            "cont_without_booking":len(continer_booking) -len(booking),
+                                            "guide2":len(guide2), "guide3":len(guide3),  
+                                            "sum_fee":len(sum_fee), 
+                                            "not_fee":len(continer_booking) - len(sum_fee),
+                                            "demurrage":len(demurrage),
+                                           })
+        
         
         except Exception as e:
             print(e)
@@ -3528,40 +3556,7 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                 print('sfadsfds')
                 guide_query &= Q(id__in=booking_id)
                 
-            print(f'guide_query {guide_query}')
-            
-            # for item in continer:
-            #     print(item)
-            #     try :
-            #         Guide.objects.get(continer=item)
-            #         print('dffsdvesd')
-                    
-            #     except Guide.DoesNotExist:
-            #         guid = Guide.objects.create(
-            #             continer=item.file_number,
-            #             guide_number=None,
-            #             guide_id_barjame=None,
-            #             company =item.bill.company,
-            #             is_active=None,
-            #             sender=None,
-            #             receiver=None,
-            #             carrier=None,
-            #             next_carrier=None,
-            #             carrier_descriptions=None,
-            #             place_date_delivery_goods=None,
-            #             location_date_loading=None,
-            #             attached_documents=None,
-            #             sign_number=None,
-            #             download_info=None,
-            #             pure_agreements=None,
-            #             sender_instructions=None,
-            #             place_date_issue=None,
-            #             date_place_receipt_goods=None,
-            #         )
-            #         guid.save()
-                
-                
-                
+            print(f'guide_query {guide_query}')    
             guides = Guide.objects.filter(guide_query)
             print(f'guides {guides}')
             print(file_number, '======', query)
