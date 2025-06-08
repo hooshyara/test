@@ -3394,37 +3394,37 @@ class ContinerBookingInfoView(APIView):
             guide3 = Guide.objects.filter(Q(is_active=False) & Q(company=id))
             guide_id = guide.values_list("id", flat=True)
 
-            booking = Booking.objects.filter(guide__id__in=guide_id)
+            # booking = Booking.objects.filter(guide__id__in=guide_id)
 
-            sum_fee = SumFees.objects.filter(Q(sum_fees__gt=0) & Q(continer__bill__company=id))
+            # sum_fee = SumFees.objects.filter(Q(sum_fees__gt=0) & Q(continer__bill__company=id))
 
-            demurrage = Demurrage.objects.filter(Q(continer__bill__company=id))
-            demurrage_id = demurrage.values_list("continer__file_number", flat=True)
+            # demurrage = Demurrage.objects.filter(Q(continer__bill__company=id))
+            # demurrage_id = demurrage.values_list("continer__file_number", flat=True)
 
-            exit_cont = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج شده') 
-                                                        & Q(continer__bill__company=id)))
+            # exit_cont = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج شده') 
+            #                                             & Q(continer__bill__company=id)))
             
-            exit_cont2 = len(ExitContiner.objects.filter(Q(types='کانتینرهای مهلت خروج گذشته') 
-                                                        & Q(continer__bill__company=id)))
+            # exit_cont2 = len(ExitContiner.objects.filter(Q(types='کانتینرهای مهلت خروج گذشته') 
+            #                                             & Q(continer__bill__company=id)))
             
-            exit_cont3 = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج نشده')
-                                                        & Q(continer__bill__company=id)))
+            # exit_cont3 = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج نشده')
+            #                                             & Q(continer__bill__company=id)))
             
-            continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
+            # continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
             return Response({
-                                             "guide_len":len(guide), 
-                                            "booking_len":len(guide)- len(booking),
-                                            "booking":len(booking),
-                                            "cont_without_booking":len(continer_booking) -len(booking),
-                                            "guide2":len(guide2), "guide3":len(guide3),  
-                                            "sum_fee":len(sum_fee), 
-                                            "not_fee":len(continer_booking) - len(sum_fee),
-                                            "demurrage":len(set(demurrage_id)),
-                                            "not_demurrage":len(continer_booking) - len(set(demurrage_id)),
-                                            "exit_cont":exit_cont, "exit_cont2":exit_cont2,
-                                            "exit_cont3":exit_cont3, 
-                                            "not_download":continer
-                                           }, status=status.HTTP_200_OK)
+                            "guide_len":len(guide), 
+                            # "booking_len":len(guide)- len(booking),
+                            # "booking":len(booking),
+                            # "cont_without_booking":len(continer_booking) -len(booking),
+                            # "guide2":len(guide2), "guide3":len(guide3),  
+                            # "sum_fee":len(sum_fee), 
+                            # "not_fee":len(continer_booking) - len(sum_fee),
+                            # "demurrage":len(set(demurrage_id)),
+                            # "not_demurrage":len(continer_booking) - len(set(demurrage_id)),
+                            # "exit_cont":exit_cont, "exit_cont2":exit_cont2,
+                            # "exit_cont3":exit_cont3, 
+                            # "not_download":continer
+                            }, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response({"message":"ERROR"},
@@ -3451,29 +3451,10 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
 
                 carrier = Carrier.objects.all()
                 carrier_ser = CarrierSerializers(carrier, many=True)
-
-                
-                
-                # guide_len = کل راهنامه ها و کانتینر دارای راهنامه
-                # booking_len =  کل راهنامه ها ی فاقد بوکینگ
-                # booking =  کل کانتینر های دارای بوکینگ
-                # cont_without_booking = کانتینر های فاقد بوکینگ
-                # guide2 = کانتینر فاقد راهنامه
-                # guide3 = تعداد راهنامه باطل شده
-                #sum_fee = کانتینر دارای هزینه
-                # not_fee = کانتینر فاقد هزینه
-                # demurrage = کانتینر دارای هزینه دمراژ
-                # not_demurrage = کانتینر فاقد هزینه دمراژ
-                # exit_cont = تعداد کانتینر خارج شده
-                # exit_cont3 = تعداد کانتینر خارج نشده
-                # exit_cont2 = تعداد کانتینر مهلت خروج گذشته
-                # not_download = فاقد بارگیری
                 return paginator.get_paginated_response({"data":serializer.data, "route":route_ser.data,
                                             "ship":ship_ser.data, "owner_goods":owner_goods_ser.data,
                                             "carrier":carrier_ser.data
                                            })
-        
-        
         except Exception as e:
             print(e)
             return Response({"message":"ERROR"},
