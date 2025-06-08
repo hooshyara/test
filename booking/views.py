@@ -3448,12 +3448,13 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
 
                 owner_goods = OwnersOfGoods.objects.all()
                 owner_goods_ser = OwnersOfGoodsSeriallizer(owner_goods, many=True)
+                guide = Guide.objects.filter(Q(is_valid=True) & Q(company=id))
 
                 carrier = Carrier.objects.all()
                 carrier_ser = CarrierSerializers(carrier, many=True)
                 return paginator.get_paginated_response({"data":serializer.data, "route":route_ser.data,
                                             "ship":ship_ser.data, "owner_goods":owner_goods_ser.data,
-                                            "carrier":carrier_ser.data
+                                            "carrier":carrier_ser.data, "guide":len(guide)
                                            })
         except Exception as e:
             print(e)
