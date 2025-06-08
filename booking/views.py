@@ -3427,7 +3427,7 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                 exit_cont3 = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج نشده')
                                                             & Q(continer__bill__company=id)))
                 
-                # continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
+                continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
                 
                 # guide_len = کل راهنامه ها و کانتینر دارای راهنامه
                 # booking_len =  کل راهنامه ها ی فاقد بوکینگ
@@ -3456,7 +3456,7 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                                             "not_demurrage":len(continer_booking) - len(set(demurrage_id)),
                                             "exit_cont":exit_cont, "exit_cont2":exit_cont2,
                                             "exit_cont3":exit_cont3, 
-                                            # "not_download":continer
+                                            "not_download":continer
                                            })
         
         
