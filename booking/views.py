@@ -3651,7 +3651,7 @@ class GenerateReportPDF(APIView):
         }
 
         # 2. Load and render the HTML template
-        template = get_template('sag.html')
+        template = get_template('form.html')
         html_string = template.render(context)
 
         # 3. Generate the PDF using WeasyPrint
