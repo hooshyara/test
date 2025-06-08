@@ -192,7 +192,9 @@ class ContinerAdmin(admin.ModelAdmin):
 class DemurrageAdmin(admin.ModelAdmin):
     model = Demurrage
     fields = ['continer' ,'demurrage_typpe', 'type_info', 'date',
-            'price', 'description', 'file', 'company']
+            'price', 'description', 'dem_file', 'company']
+    list_display = ["id", "continer"]
+    
     
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
