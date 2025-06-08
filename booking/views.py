@@ -3414,10 +3414,9 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                 sum_fee = SumFees.objects.filter(Q(sum_fees__gt=0) & Q(continer__bill__company=id))
                 demurrage = Demurrage.objects.filter(Q(continer__bill__company=id))
                 demurrage_id = demurrage.values_list("continer__file_number", flat=True)
-                print(set(demurrage_id))
-                exit_cont = ExitContiner.objects.filter(types='کانتینرهای خارج شده').count()
-                exit_cont2 = ExitContiner.objects.filter(types='کانتینرهای مهلت خروج گذشته').count()
-                exit_cont3 = ExitContiner.objects.filter(types='کانتینرهای خارج نشده').count()
+                exit_cont = len(ExitContiner.objects.filter(Q(types='کانتینرهای خارج شده') & Q(continer__bill__company=id)))
+                exit_cont2 = len(ExitContiner.objects.filter(Q(types='کانتینرهای مهلت خروج گذشته') & Q(continer__bill__company=id)))
+                exit_cont3 = len(ExitContiner.objects.filter(types='کانتینرهای خارج نشده' & Q(continer__bill__company=id)))
                 continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
                 # guide_len = کل راهنامه ها و کانتینر دارای راهنامه
                 # booking_len =  کل راهنامه ها ی فاقد بوکینگ
