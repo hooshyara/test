@@ -3416,7 +3416,11 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                 sum_fee = SumFees.objects.filter(Q(sum_fees__gt=0) & Q(continer__bill__company=id))
                 demurrage = Demurrage.objects.filter(Q(continer__bill__company=id))
                 demurrage_id = demurrage.values_list("continer__file_number", flat=True)
-                print(demurrage_id)
+                print(set(demurrage_id))
+                exit_cont = ExitContiner.objects.filter(types='کانتینرهای خارج شده').count()
+                exit_cont2 = ExitContiner.objects.filter(types='کانتینرهای مهلت خروج گذشته').count()
+                exit_cont3 = ExitContiner.objects.filter(types='کانتینرهای خارج نشده').count()
+                continer = len(Continer.objects.filter(Q(bill__company=id) & Q(download_date=None)))
                 # guide_len = کل راهنامه ها و کانتینر دارای راهنامه
                 # booking_len =  کل راهنامه ها ی فاقد بوکینگ
                 # booking =  کل کانتینر های دارای بوکینگ
@@ -3427,6 +3431,10 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                 # not_fee = کانتینر فاقد هزینه
                 # demurrage = کانتینر دارای هزینه دمراژ
                 # not_demurrage = کانتینر فاقد هزینه دمراژ
+                # exit_cont = تعداد کانتینر خارج شده
+                # exit_cont3 = تعداد کانتینر خارج نشده
+                # exit_cont2 = تعداد کانتینر مهلت خروج گذشته
+                # not_download = فاقد بارگیری
                 return paginator.get_paginated_response({"data":serializer.data, "route":route_ser.data,
                                             "ship":ship_ser.data, "owner_goods":owner_goods_ser.data,
                                             "carrier":carrier_ser.data, "guide_len":len(guide), 
@@ -3436,7 +3444,11 @@ class ContinerBookingView(APIView): # get continer continer-booking page and con
                                             "guide2":len(guide2), "guide3":len(guide3),  
                                             "sum_fee":len(sum_fee), 
                                             "not_fee":len(continer_booking) - len(sum_fee),
-                                            "demurrage":len(demurrage),
+                                            "demurrage":len(set(demurrage_id)),
+                                            "not_demurrage":len(continer_booking) - len(set(demurrage_id)),
+                                            "exit_cont":exit_cont, "exit_cont2":exit_cont2,
+                                            "exit_cont3":exit_cont3, 
+                                            "not_download":continer
                                            })
         
         
