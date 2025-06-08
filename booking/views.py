@@ -3636,7 +3636,7 @@ class GenerateReportPDF(APIView):
             'shipper_commission_percentage': data.get('shipper_commission_percentage', ''),
             'freight_cost': data.get('freight_cost', ''),
             'shipper_commission_amount': data.get('shipper_commission_amount', ''),
-            'excess_tonnage_quantity_shipper': data.gert('excess_tonnage_quantity_shipper', '0'),
+            'excess_tonnage_quantity_shipper': data.get('excess_tonnage_quantity_shipper', '0'),
             'excess_tonnage_amount_shipper': data.get('excess_tonnage_amount_shipper', '0'),
             'excess_tonnage_weight_shipper': data.get('excess_tonnage_weight_shipper', '0'),
             'shipper_total': data.get('shipper_total', ''),
